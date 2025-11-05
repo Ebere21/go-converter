@@ -4,14 +4,17 @@
     "slug": "go-converter",
     "version": "1.0.0",
     "sdkVersion": "48.0.0",
-    "platforms": [
-      "android",
-      "ios"
-    ],
+    "platforms": ["android", "ios"],
     "android": {
-      "package": "com.yourcompany.goconverter",
+      "package": "com.ebere21.goconverter",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-8451933386874185~9243315258"
+      }
+    },
+    "extra": {
+      "serverUrl": "http://goconverter-server.onrender.com",
+      "eas": {
+        "projectId": "69695951-4618-47a3-aaf4-d4180c37ccf1"
       }
     }
   }
