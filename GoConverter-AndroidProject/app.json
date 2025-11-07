@@ -3,10 +3,14 @@
     "name": "GoConverter",
     "slug": "go-converter",
     "version": "1.0.0",
-    "sdkVersion": "48.0.0",
-    "platforms": ["android", "ios"],
+    "sdkVersion": "51.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "platforms": ["android","ios"],
     "android": {
       "package": "com.ebere21.goconverter",
+      "compileSdkVersion": 34,
+      "targetSdkVersion": 34,
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-8451933386874185~9243315258"
       }
