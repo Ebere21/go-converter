@@ -1,1 +1,49 @@
+name: EAS Cloud Android Build (Artifact Upload)
 
+on:
+  workflow_dispatch:      # allow manual run
+  push:
+    branches: [ main ]    # also run on pushes to main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: |
+          npm ci || npm install
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Trigger EAS cloud build
+        id: eas
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          echo "Starting Android build..."
+          # start build and capture JSON output
+          BUILD_INFO=$(eas build --platform android --profile preview --non-interactive --json)
+          echo "$BUILD_INFO" > build-info.json
+          BUILD_ID=$(node -pe "require('./build-info.json')[0].id")
+          echo "build_id=$BUILD_ID" >> $GITHUB_OUTPUT
+          echo "Build started on Expo Cloud: https://expo.dev/accounts/$(jq -r '.[0].accountName' build-info.json)/projects/$(jq -r '.[0].projectName' build-info.json)/builds/$BUILD_ID"
+          echo "Waiting for build to finish..."
+          eas build:wait --build-id $BUILD_ID
+          eas build:download --build-id $BUILD_ID --path app-release.aab
+
+      - name: Upload Android artifact to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: GoConverter-Android
+          path: app-release.aab
