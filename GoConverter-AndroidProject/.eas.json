@@ -1,0 +1,20 @@
+{
+  "cli": {
+    "version": ">= 3.13.0"
+  },
+  "build": {
+    "preview": {
+      "android": {
+        "image": "latest",
+        "java": "17"
+      }
+    },
+    "production": {
+      "android": {
+        "image": "latest",
+        "java": "17"
+      }
+    }
+  }
+}
+
